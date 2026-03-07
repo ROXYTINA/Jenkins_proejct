@@ -1,0 +1,21 @@
+services:
+  jenkins:
+    image: jenkins/jenkins:lts
+    privileged: true
+    user: root
+    ports:
+      - 8080:8080 # for jenkins web interface
+      - 50000:50000 # for jenkins slave agents (runners)
+    container_name: jenkins-tp01-I4C
+    volumes:
+      - "/home/apsara/jenkins/jenkins_home:/var/jenkins_home"
+    links:
+      - "laravel-agent"
+  laravel-agent:
+    build: ./laravel-agent
+    image: i4c/jenkins-agent:latest
+    container_name: jenkins-laravel-agent-I4C
+    environment:
+      - JENKINS_URL=http://localhost:8080
+      - JENKINS_AGENT_NAME=laravel-agent-I4C
+      - JENKINS_AGENT_SSH_PUBKEY=ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINtj7toyDfnZCXx/RJ4IGPdB4esJmsektp+gIdVd7DQp apsara@visakha # replace with the actual secret from Jenkins
