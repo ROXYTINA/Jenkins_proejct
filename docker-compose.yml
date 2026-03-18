@@ -1,0 +1,23 @@
+services:
+  control-machine-i4c:
+    image: alpine
+    container_name: control-machine-i4c
+    tty: true
+    stdin_open: true
+    command: sh
+    volumes:
+      - "./ansible:/ansible"
+    depends_on:
+      - server1-i4c
+    build:
+      context: .
+      dockerfile: dockerfile.control
+
+  server1-i4c:
+    image: alpine
+    container_name: server1-i4c
+    tty: true
+    stdin_open: true
+    command: sh
+    volumes:
+      - "./server1:/server1"

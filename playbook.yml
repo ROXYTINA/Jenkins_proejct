@@ -1,0 +1,31 @@
+- name: Install Nginx on server
+  hosts: myservers
+  become: yes
+  gather_facts: yes
+
+  tasks:
+
+    - name: Update apt package list
+      apt:
+        update_cache: yes
+
+      
+    - name: Install Nginx
+      apt:
+        name: nginx
+        state: present
+        update_cache: yes
+
+    - name: Start Nginx service
+      service:
+        name: nginx
+        state: started
+        enabled: yes
+
+    - name: Copy HTML file to web server
+      copy:
+        src: ./Kanha
+        dest: /var/www/html/
+        owner: www-data
+        group: www-data
+        mode: '0755'
